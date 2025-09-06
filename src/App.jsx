@@ -1,21 +1,18 @@
-import './App.css'
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import ExpenseForm from './components/ExpenseForm';
 import ExpenseList from './components/ExpenseList';
-
+import './App.css';
 
 const App = () => {
   const [expenses, setExpenses] = useState([]);
   const [theme, setTheme] = useState('light');
 
   useEffect(() => {
-    // Save expenses to local storage whenever they change
-    localStorage.setItem('expenses', JSON.stringify(expenses));
-  }, [expenses]);
+    // You can add logic to load expenses from local storage here
+  }, []);
 
   useEffect(() => {
-    // Set the theme class on the body element
     document.body.className = theme;
   }, [theme]);
 
@@ -31,12 +28,19 @@ const App = () => {
     setTheme(currentTheme => (currentTheme === 'light' ? 'dark' : 'light'));
   };
 
+  // Calculate the total expenses here
+  const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+
   return (
     <div className="container">
       <Header toggleTheme={toggleTheme} theme={theme} />
       <main>
         <ExpenseForm addExpense={addExpense} />
-        <ExpenseList expenses={expenses} deleteExpense={deleteExpense} />
+        <ExpenseList 
+          expenses={expenses} 
+          deleteExpense={deleteExpense} 
+          totalExpenses={totalExpenses} 
+        />
       </main>
     </div>
   );
